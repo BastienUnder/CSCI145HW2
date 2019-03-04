@@ -3,5 +3,36 @@ public class MatrixRow implements HeadNode{
     private Node nextRow;
     private Node nextColumn;
 
+    //Node Logic
+    public Node getNextRow(){
+        return nextRow;
+    }
+    public void setNextRow(Node next){
+        nextRow = next;
+    }
+    public Node getNextColumn(){
+        return nextColumn;
+    }
+    public void setNextColumn(Node next){
+        nextColumn = next;
+    }
 
+
+    //HeadNode Logic
+    public HeadNode getNext(){
+        return (HeadNode)nextRow;
+
+    }
+    public ValueNode getFirst(){
+        return (ValueNode)nextColumn;
+    }
+    public void insert(ValueNode value){
+        // should insert a ValueNode in sorted order based on the row and column of the ValueNode being inserted
+
+    }
+    public int get(int position){
+
+        // return 0 if there is no ValueNode at the specified position (Note that row and column positions start at 1, not 0)
+        return 0;
+    }
 }

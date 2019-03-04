@@ -6,16 +6,23 @@ public class ValueNode implements Node{
     private Node nextRow;
     private Node nextColumn;
 
+    //Node Logic
     public Node getNextRow(){
         return nextRow;
     }
-    public void setNextColumn(Node next){
-        //nextColumn = nextColumn;
+
+    public void setNextRow(Node next){
+        this.nextRow = nextRow;
     }
+
     public Node getNextColumn(){
-
+        return nextColumn;
     }
+
     public void setNextColumn(Node next){
-
+        this.nextColumn = nextColumn;
     }
+
+
+
 }
