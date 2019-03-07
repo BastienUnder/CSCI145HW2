@@ -5,16 +5,18 @@ public class MatrixRow implements HeadNode{
 
     //Node Logic
     public Node getNextRow(){
+        //returns the next MatrixRow
         return nextRow;
     }
     public void setNextRow(Node next){
-        nextRow = next;
+        this.nextRow = next;
     }
     public Node getNextColumn(){
+        //returns the first valueNode in its row
         return nextColumn;
     }
     public void setNextColumn(Node next){
-        nextColumn = next;
+        this.nextColumn = next;
     }
 
 
@@ -24,6 +26,7 @@ public class MatrixRow implements HeadNode{
 
     }
     public ValueNode getFirst(){
+
         return (ValueNode)nextColumn;
     }
     public void insert(ValueNode value){
@@ -31,6 +34,7 @@ public class MatrixRow implements HeadNode{
 
     }
     public int get(int position){
+
 
         // return 0 if there is no ValueNode at the specified position (Note that row and column positions start at 1, not 0)
         return 0;

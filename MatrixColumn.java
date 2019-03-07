@@ -5,16 +5,18 @@ public class MatrixColumn implements HeadNode {
 
     //Node Logic
     public Node getNextRow() {
-        return null;
+        //returns the first valueNode in its column
+        return nextRow;
     }
     public void setNextRow(Node next) {
-
+        this.nextRow = next;
     }
     public Node getNextColumn() {
-        return null;
+        //returns the next MatrixColumn
+        return nextColumn;
     }
     public void setNextColumn(Node next) {
-
+        this.nextColumn = next;
     }
 
     //HeadNode Logic
