@@ -7,18 +7,18 @@ public class ValueNode implements Node{
     private Node nextColumn;
 
     //Node Logic
-    public Node getNextRow(){
+    public ValueNode getNextRow(){
         //returns the next valueNode in the column, moves down rows
-        return nextRow;
+        return (ValueNode)nextRow;
     }
 
     public void setNextRow(Node next){
         this.nextRow = next;
     }
 
-    public Node getNextColumn(){
+    public ValueNode getNextColumn(){
         //return the next valueNode in the row, moves right through columns
-        return nextColumn;
+        return (ValueNode)nextColumn;
     }
 
     public void setNextColumn(Node next){
