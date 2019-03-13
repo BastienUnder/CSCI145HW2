@@ -69,16 +69,6 @@ public class MatrixRow implements HeadNode{
                 }
             }
 
-            /*while(cur.getNextColumn() != null){
-
-                if(cur.getNextColumn().getColumn() > value.getColumn()){
-                    cur.setNextColumn(value);
-                    break;
-                }
-                else{
-                    cur = cur.getNextColumn();
-                }
-            }*/
         }
 
         //if we want to insert into a column before the first valueNode in that row

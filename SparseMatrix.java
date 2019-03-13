@@ -6,7 +6,7 @@ public class SparseMatrix {
 
     //Sparse Matrix logic
     public SparseMatrix(int rows, int columns){
-        System.out.println("WAHOO");
+        System.out.println();
 
         this.totalRows = rows;
         this.totalColumns = columns;
@@ -15,7 +15,7 @@ public class SparseMatrix {
         MatrixColumn curColumn = new MatrixColumn();
         this.firstColumn = curColumn;
 
-        for(int i = 0; i < totalColumns; i++){
+        for(int i = 0; i < totalColumns; i++){//Does this give us one column to many?
             curColumn.setNextColumn(new MatrixColumn());
             curColumn = (MatrixColumn)curColumn.getNextColumn();
         }
@@ -24,7 +24,7 @@ public class SparseMatrix {
         MatrixRow curRow = new MatrixRow();
         this.firstRow = curRow;
 
-        for(int i = 0; i < totalRows; i++){
+        for(int i = 0; i < totalRows; i++){//one row too many?
             curRow.setNextRow(new MatrixRow());
             curRow = (MatrixRow)curRow.getNextRow();
         }
@@ -72,12 +72,15 @@ public class SparseMatrix {
         for(int i = 1; i < row; i++){
             curRow = curRow.getNext();
         }
-
+        /*
 //THe top!!!!
         //if the location being looked for doesn't exist
+
+        //if there is nothing in the row
         if(curRow.getNextColumn() == null){
             return 0;
         }
+
 
 
         //if we want to insert into a further column than the first one is in
@@ -121,7 +124,7 @@ public class SparseMatrix {
                 else{
                     cur = cur.getNextColumn();
                 }
-            }*/
+            } had a * and /
         }
 
         //if we want to insert into a column before the first valueNode in that row
@@ -134,11 +137,7 @@ public class SparseMatrix {
 
     //The Bottom!!!
 
-
-
-
-
-
+        */
         return 0;
     }
 
@@ -170,13 +169,125 @@ public class SparseMatrix {
         }
     }
     public SparseMatrix transpose(){
-        //
-        return null;
+        SparseMatrix tranSpar = new SparseMatrix(totalColumns, totalRows);
+        HeadNode curRow = (HeadNode) firstRow.getNextRow();//Make this a matrixNode not a HeadNode
+        ValueNode curColumn = ((MatrixRow) firstRow.getNextRow()).getNextColumn();
+
+        for (int i = 1; i < totalRows + 1; i++) {
+            for (int j = 1; j < totalColumns + 1; j++) {
+                if (curColumn != null && curColumn.getColumn() == j) {
+                    tranSpar.insert(curColumn.getColumn(), curColumn.getRow(), curColumn.getValue());
+
+                    curColumn = curColumn.getNextColumn();
+                }
+            }
+            curRow = (MatrixRow)curRow.getNextRow();
+
+            if (curRow != null) {
+                curColumn = (ValueNode) curRow.getNextColumn();
+            }
+            else{
+                curColumn = null;
+            }
+        }
+        return tranSpar;
     }
 
     public SparseMatrix product(SparseMatrix other){
-        return null;
+        if (totalColumns != other.getTotalRows()) {
+            System.out.println("The matrices have incompatible sizes.");
+            System.out.println("Make sure that the first matrix has the same number of columns as the second matrix has rows.");
+            return null;
+        }
+        SparseMatrix productSpar = new SparseMatrix(totalRows, other.getTotalColumns());
+        HeadNode curRowA = (HeadNode) firstRow.getNextRow();
+        ValueNode curColumnA = ((MatrixRow) firstRow.getNextRow()).getNextColumn();
+        //HeadNode curRowB = (HeadNode) other.firstRow.getNextRow();
+        HeadNode curColumnB = (HeadNode)other.firstColumn.getNextColumn();
+        ValueNode iterateColumnB = ((MatrixColumn) other.firstColumn.getNextColumn()).getNextRow();
+        HeadNode curRowAtemp = (HeadNode) firstRow.getNextRow();
+
+        //for each row in MatrixA
+        for (int i = 1; i < totalRows + 1; i++) {
+            //for each column in MatrixB
+            for (int j = 1; j < other.totalColumns + 1; j++) {
+
+                int toInsert = 0;
+                //multiply corresponding item from A's row by item in B's column
+
+                for(int itemInRow = 1; itemInRow < totalColumns + 1; itemInRow++){
+                    if(iterateColumnB != null && iterateColumnB.getRow() == itemInRow) {
+                        if (curColumnA != null && curColumnA.getColumn() == itemInRow) {
+
+                            int itemValueA = curColumnA.getValue();
+                            int itemValueB = iterateColumnB.getValue();
+                            //add to toInsert
+                            toInsert = toInsert + (itemValueA * itemValueB);
+                        }
+                    }
+                    //move to next item in both matrices
+                    if(curColumnA != null && curColumnA.getColumn() == itemInRow) {
+                        curColumnA = curColumnA.getNextColumn();
+                    }
+
+                    if(iterateColumnB != null && iterateColumnB.getRow() == itemInRow) {
+                        iterateColumnB = iterateColumnB.getNextRow();
+                    }
+
+
+                }
+
+                productSpar.insert(i, j, toInsert);
+
+
+
+                //to use as a temp value to reset to each row in A each new column of B
+                curRowAtemp = (HeadNode) firstRow.getNextRow();
+                for (int whichRow = 1; whichRow < i; whichRow++) {
+                    if (curRowAtemp != null) {
+                        curRowAtemp = (HeadNode) curRowAtemp.getNextRow();
+                    }
+                }
+                if(curRowAtemp != null){
+                    curColumnA = (ValueNode)curRowAtemp.getNextColumn();
+                }
+
+
+
+                //to set to the next column in MatrixB, aka B
+                curColumnB = ((MatrixColumn) other.firstColumn.getNextColumn());
+                for(int whichColumn = 1; whichColumn < j +1; whichColumn++){
+                    if(curColumnB != null) {
+                        curColumnB = (MatrixColumn)curColumnB.getNextColumn();
+                    }
+                }
+
+                if(curColumnB != null) {
+                    iterateColumnB = ((MatrixColumn) curColumnB).getNextRow();
+                }
+
+            }
+
+            //curColumnB = (MatrixColumn)other.firstColumn.getNextColumn();
+            iterateColumnB = ((MatrixColumn) other.firstColumn.getNextColumn()).getNextRow();
+
+
+            //curColumnA = ((MatrixRow) firstRow.getNextRow()).getNextColumn();
+            for(int whichRow = 1; whichRow < i +1; whichRow++){
+                if(curRowA != null){
+                    curRowA = (HeadNode)curRowA.getNextRow();
+
+                }
+            }
+            if(curRowA != null){
+                curColumnA = (ValueNode)curRowA.getNextColumn();
+            }
+
+
+        }
+        return productSpar;
     }
+
 
     //Getters and Setters
     public int getTotalRows() {

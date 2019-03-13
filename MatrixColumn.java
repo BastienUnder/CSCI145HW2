@@ -39,8 +39,11 @@ public class MatrixColumn implements HeadNode {
 
 
             //if there's only one valueNode in that column set the new ValueNode for right after
-            if(cur.getNextColumn() == null){
-                cur.setNextColumn(value);
+
+            //Just spent hours attempting find out what was wrong with Transpose, turned out it
+            // was just that I called getNextColumn and not getNextRow in this first if block
+            if(cur.getNextRow() == null){
+                cur.setNextRow(value);
             }
             else {
                 colLoop: for (int i = 1; i < value.getRow() + 1; i++) {
@@ -65,21 +68,6 @@ public class MatrixColumn implements HeadNode {
                     }
                 }
             }
-
-
-
-
-
-            /*while(cur.getNextRow() != null){
-
-                if(cur.getNextRow().getRow() > value.getRow()){
-                    cur.setNextRow(value);
-                    break;
-                }
-                else{
-                    cur = cur.getNextRow();
-                }
-            }*/
         }
 
         //if we want to insert into a row before the first valueNode in that column
